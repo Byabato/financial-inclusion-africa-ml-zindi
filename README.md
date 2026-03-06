@@ -1,218 +1,328 @@
-# 🌍 Financial Inclusion in Africa — Predictive ML + Policy Insights
+# 🌍 Financial Inclusion in Africa — ML Pipeline & Policy Simulator
 
 <p align="center">
-  <img src="outputs/shap_bar_importance.png" alt="SHAP Feature Importance" width="780"/>
+  <img src="outputs/shap_bar_importance.png" alt="SHAP Feature Importance" width="800"/>
 </p>
 
 <p align="center">
-  <b>Kelvin Byabato</b> | <a href="https://github.com/Byabato">Byabato</a> 
+  <b>Kelvin Byabato</b> &nbsp;·&nbsp;
+  <a href="https://www.linkedin.com/in/kelvin-byabato">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white"/>
+  </a>
+  <a href="https://zindi.africa/users/kelvin_byb">
+    <img src="https://img.shields.io/badge/Zindi-kelvin__byb-orange?style=flat-square"/>
+  </a>
+  <a href="https://www.instagram.com/kelvin_byb/">
+    <img src="https://img.shields.io/badge/Instagram-E4405F?style=flat-square&logo=instagram&logoColor=white"/>
+  </a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Competition-Zindi%20Africa-blue?style=flat-square"/>
   <img src="https://img.shields.io/badge/OOF%20MAE-0.1117-brightgreen?style=flat-square"/>
   <img src="https://img.shields.io/badge/AUC-0.8647-brightgreen?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Model-Stacking%20Ensemble-orange?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Explainability-SHAP-purple?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Ensemble-XGB%20%2B%20LGBM%20%2B%20CatBoost-orange?style=flat-square"/>
+  <img src="https://img.shields.io/badge/XAI-SHAP%20TreeExplainer-purple?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Tuning-Optuna%2050%20trials-blue?style=flat-square"/>
   <img src="https://img.shields.io/badge/Python-3.10%2B-yellow?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Compute-Lightning%20AI%20Studios-792EE5?style=flat-square"/>
+</p>
+
+<p align="center">
+  <a href="https://byabato.github.io/financial-inclusion-africa-ml-zindi/">
+    <img src="https://img.shields.io/badge/🌐%20Live%20Project%20Page-Visit%20Now-success?style=for-the-badge"/>
+  </a>
 </p>
 
 ---
 
-## 📌 The Problem
+> **86% of East Africans have no bank account.** This pipeline predicts who is excluded, explains why using SHAP, and recommends SDG-aligned interventions — not just a leaderboard score.
 
-Only **14% of adults** across Kenya, Rwanda, Tanzania, and Uganda have access to a commercial bank account. Financial exclusion traps families in poverty cycles, blocks access to credit, and prevents entire economies from growing.
+---
 
-This project builds a machine learning model to **predict** which individuals are most likely to be unbanked — and goes further to **explain why** and **recommend interventions** using SHAP-powered personalized pathways.
+## 📋 Table of Contents
 
-**Challenge:** [Zindi Africa — Financial Inclusion in Africa](https://zindi.africa/competitions/financial-inclusion-in-africa)  
-**Metric:** Mean Absolute Error (MAE) | **Result: OOF MAE 0.1117 | AUC 0.8647**  
-**Data:** ~33,600 survey respondents across 4 East African countries (2016–2018)
+- [Problem Statement](#-problem-statement)
+- [Results](#-results)
+- [Architecture](#-architecture)
+- [Feature Engineering](#-feature-engineering)
+- [Training Strategy](#-training-strategy)
+- [Explainability Layer](#-explainability-layer)
+- [Innovation: Policy Simulator](#-innovation-policy-simulator)
+- [Setup & Reproduction](#-setup--reproduction)
+- [File Reference](#-file-reference)
+- [References](#-references)
+
+---
+
+## 🎯 Problem Statement
+
+**Competition:** [Zindi Africa — Financial Inclusion in Africa](https://zindi.africa/competitions/financial-inclusion-in-africa)  
+**Task:** Binary classification — predict bank account ownership (Yes=1, No=0)  
+**Metric:** Mean Absolute Error (MAE) on hard 0/1 predictions  
+**Data:** ~33,600 survey respondents, Kenya · Rwanda · Tanzania · Uganda · 2016–2018  
+**Class imbalance:** 14% positive (banked) · 86% negative (unbanked) · 6:1 ratio
+
+**Why MAE matters here:** MAE on binary labels equals the fraction of misclassified predictions. Minimizing MAE = maximizing accuracy. With class imbalance, the optimal threshold is NOT 0.5 — threshold optimization is critical.
 
 ---
 
 ## 🏆 Results
 
-| Model | OOF MAE | OOF AUC |
-|---|---|---|
-| Logistic Regression (baseline) | ~0.17 | ~0.75 |
-| XGBoost | ~0.13 | ~0.84 |
-| LightGBM | ~0.13 | ~0.84 |
-| CatBoost | ~0.13 | ~0.84 |
-| **Stacking Ensemble (final)** | **0.1117** | **0.8647** |
-
----
-
-## 🔬 What Makes This Different
-
-Most submissions output `0` or `1`. This project goes 3 layers deeper:
-
-**Layer 1 — Predict:** Stacked ensemble of XGBoost + LightGBM + CatBoost, Optuna-tuned, threshold-optimized.
-
-**Layer 2 — Explain:** SHAP TreeExplainer reveals *why* each person was predicted unbanked.
-
-**Layer 3 — Act:** A Financial Inclusion Recommender maps each person's barriers to SDG-aligned interventions:
-
-```
-Person uniqueid_6065 x Kenya — Predicted: UNBANKED
-  📱 Mobile money bridge       ← #1 barrier: no cellphone access (SHAP: -0.843)
-     SDG 9: Industry, Innovation & Infrastructure
-  📊 Multi-factor intervention ← #2 barrier: low inclusion score (SHAP: -0.617)
-     SDG 1, 4, 8, 10
-```
-
----
-
-## 📊 SHAP Storytelling
-
-<table>
-  <tr>
-    <td>
-      <img src="outputs/shap_bar_importance.png" alt="SHAP Bar Importance" width="350"/>
-      <p align="center"><i>Feature importance: Cellphone Access is the top actionable barrier.</i></p>
-    </td>
-    <td>
-      <img src="outputs/14_barrier_distribution.png" alt="Barrier Distribution" width="350"/>
-      <p align="center"><i>Distribution of barriers: Infrastructure and mobile access dominate.</i></p>
-    </td>
-  </tr>
-</table>
-
----
-
-## 🧩 Simulator Demo
-
-<p align="center">
-  <img src="outputs/intervention_simulator.png" alt="Policy Intervention Simulator" width="700"/>
-</p>
-<p align="center"><i>This simulator demonstrates how the model translates predictions into actionable policy interventions for each individual.</i></p>
-
----
-
-## 🌐 Social Proof & Links
-- [LinkedIn](https://www.linkedin.com/in/kelvinbyabato/)  
-- [Zindi Profile](https://zindi.africa/users/kelvin_byb)  
-- [GitHub](https://github.com/Byabato)
-
----
-
-## 🔄 Reproducibility Statement
-This project was developed on Lightning AI Studios for consistent environment management and A100 GPU acceleration.
-
----
-
-## 🚦 Future Roadmap
-- Integrate geospatial data to identify banking deserts
-- Expand to more countries and time periods
-- Deploy as a real-time policy dashboard for governments
-
----
-
-## 🧠 Key Learnings
-- Translating model coefficients into policy recommendations
-- Handling high-cardinality categorical data in East African contexts
-- Building reproducible, scalable ML pipelines for social impact
-
----
-
-## 🌍 Country Policy Scorecard
-
-| Country | Predicted Inclusion | Primary Barrier | Priority Intervention |
+| Model | OOF MAE | OOF AUC | Notes |
 |---|---|---|---|
-| 🇺🇬 Uganda | 32.1% | Infrastructure gap | Agent banking expansion |
-| 🇹🇿 Tanzania | 33.4% | Cellphone access | Mobile money programs |
-| 🇷🇼 Rwanda | 50.8% | Composite exclusion | Multi-factor programs |
-| 🇰🇪 Kenya | 73.2% | Age-education gap | Youth financial literacy |
+| Logistic Regression | ~0.170 | ~0.750 | Baseline |
+| XGBoost (default) | ~0.130 | ~0.840 | +24% vs baseline |
+| LightGBM (default) | ~0.130 | ~0.840 | Speed advantage |
+| CatBoost (default) | ~0.130 | ~0.840 | Native categoricals |
+| XGBoost (Optuna-tuned) | ~0.120 | ~0.855 | 50-trial Bayesian search |
+| **Stacking Ensemble** | **0.1117** | **0.8647** | **Final submission** |
 
-> Kenya leads because of M-Pesa. Its mobile infrastructure model should be replicated across the region.
->
-> This scorecard demonstrates how ML can be translated into actionable government policy, moving from abstract predictions to localized infrastructure priorities.
+All scores are **Out-of-Fold** — evaluated only on held-out data, never on training samples.
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-financial_inclusion_africa_ml_zindi/
-├── src/
-│   ├── config.py          — All constants, paths, encoding maps
-│   ├── features.py        — 20+ engineered features (pure functions)
-│   ├── models.py          — K-Fold training, threshold optimization
-│   ├── ensemble.py        — Stacking + blending
-│   ├── explainability.py  — SHAP beeswarm, bar, dependence plots
-│   └── recommender.py     — Innovation: recommender + scorecard + simulator
-├── notebooks/
-│   ├── 01_EDA.py                        — 10 targeted visualizations
-│   ├── 02_feature_engineering.py        — Pipeline + K-Fold target encoding
-│   ├── 03_modeling.py                   — 4 models + stacking → submission
-│   ├── 04_hyperparameter_tuning.py      — Optuna Bayesian search
-│   └── 05_explainability_innovation.py  — SHAP + Recommender + Policy
-├── data/raw/              — Train.csv, Test.csv (from Zindi, not tracked by git)
-├── data/processed/        — Auto-generated engineered features
-├── models/                — Saved models (not tracked by git)
-└── outputs/               — All charts + submission.csv
+financial-inclusion-africa-ml-zindi/
+│
+├── src/                              ← Library (import, don't modify directly)
+│   ├── __init__.py
+│   ├── config.py                     — Paths, params, encoding maps (change here only)
+│   ├── features.py                   — All feature engineering as pure functions
+│   ├── models.py                     — K-Fold training, threshold optimization, eval
+│   ├── ensemble.py                   — Stacking (meta-LR) + weighted blending
+│   ├── explainability.py             — SHAP: beeswarm, bar, dependence, waterfall
+│   └── recommender.py                — Barrier-to-intervention mapper + scorecard
+│
+├── notebooks/                        ← Run in numbered order
+│   ├── 01_EDA.py                     — 10 charts, each answers a business question
+│   ├── 02_feature_engineering.py     — Pipeline + K-Fold target encoding + alignment
+│   ├── 03_modeling.py                — 4 base models + stacking → submission.csv
+│   ├── 04_hyperparameter_tuning.py   — Optuna Bayesian search (50 trials × 2 models)
+│   ├── 05_explainability_innovation.py — SHAP + Recommender + Policy Scorecard
+│   └── 06_beat_leaderboard.py        — Pseudo-labeling + multi-seed + calibration
+│
+├── data/
+│   ├── raw/                          ← Train.csv, Test.csv (from Zindi — git ignored)
+│   └── processed/                    ← Auto-generated by notebook 02 — git ignored
+│
+├── models/                           ← Saved .pkl and .npy files — git ignored
+├── outputs/                          ← 15+ charts + submission CSV files
+├── index.md                          ← GitHub Pages landing page
+├── _config.yml                       ← Jekyll theme config
+├── requirements.txt
+└── .gitignore
 ```
 
 ---
 
-## ⚙️ Methodology
+## 🔬 Feature Engineering
 
-### Feature Engineering (20+ features)
-| Category | Features | Rationale |
+All engineering lives in `src/features.py` as **pure functions** — no side effects, fully testable, applied identically to train and test.
+
+### Encoding Map (domain-ordered, not alphabetical)
+
+```python
+EDUCATION_MAP = {
+    "No formal education"            : 0,
+    "Primary education"              : 1,
+    "Secondary education"            : 2,
+    "Vocational/Specialised training": 3,
+    "Tertiary education"             : 4,
+}
+
+EMPLOYMENT_MAP = {
+    "No Income"                  : 0,
+    "Government Dependent"       : 1,
+    "Remittance Dependent"       : 1,
+    "Farming and Fishing"        : 2,
+    "Informally employed"        : 2,
+    "Self employed"              : 3,
+    "Formally employed Private"  : 4,
+    "Formally employed Government": 5,
+}
+```
+
+### Engineered Features
+
+| Feature | Type | Rationale |
 |---|---|---|
-| Ordinal encoding | `education_rank`, `employment_rank` | Preserves hierarchy |
-| Domain composites | `inclusion_score`, `is_dependent` | Domain knowledge |
-| Interactions | `edu_x_employment`, `age_x_education` | Synergy effects |
-| Target encoding | `job_type_te`, `education_level_te` | Group inclusion rates |
+| `education_rank` | Ordinal 0–4 | Monotonic relationship with banking |
+| `employment_rank` | Ordinal 0–5 | Income stability proxy |
+| `inclusion_score` | Composite | `0.3×employment + 0.25×education + 0.2×mobile + 0.15×urban + 0.1×(1-dependent)` |
+| `is_household_head` | Binary | Financial decision-maker = account holder |
+| `is_dependent` | Binary | Remittance/no income = structural barrier |
+| `age_group` | Lifecycle bins | Banking non-linear with age (peaks 30–50) |
+| `age_squared` | Non-linear | Captures concave age-banking curve |
+| `edu_x_employment` | Interaction | Synergy: educated AND formally employed |
+| `age_x_education` | Interaction | Young AND uneducated = max exclusion risk |
+| `mobile_x_urban` | Interaction | Digital-first pathway amplifier |
+| `job_type_te` | Target-encoded | K-Fold smoothed group inclusion rates |
+| `education_level_te` | Target-encoded | K-Fold smoothed — zero leakage |
 
-### Training Strategy
-- **Stratified K-Fold (k=5)** — preserves class balance per fold
-- **K-Fold Target Encoding** — prevents data leakage
-- **Threshold Optimization** — MAE-minimizing threshold scan (0.05→0.95)
-- **Optuna (50 trials each)** — Bayesian hyperparameter search
-- **Stacking** — LR meta-learner on OOF probabilities
+### K-Fold Target Encoding (critical for data integrity)
+
+```python
+# Standard target encoding: leaks target into features
+group_mean = train.groupby("job_type")["bank_account"].mean()
+# ❌ Uses information from validation rows
+
+# K-Fold target encoding: correct approach
+for train_idx, val_idx in kf.split(train):
+    group_mean = train.iloc[train_idx].groupby("job_type")["bank_account"].mean()
+    train.iloc[val_idx]["job_type_te"] = train.iloc[val_idx]["job_type"].map(group_mean)
+# ✅ Each row encoded using only out-of-fold rows
+```
 
 ---
 
-## 🚀 Quick Start
+## 🎯 Training Strategy
+
+### Why Stratified K-Fold?
+
+With 14% positive class, random splitting creates folds with as few as 8% or as many as 20% positives. Stratified splitting guarantees every fold mirrors the full 14% ratio — essential for reliable OOF estimates.
+
+### Why Threshold Optimization?
+
+```python
+# Default threshold = 0.5 → wrong for imbalanced data
+default_preds = (probas >= 0.5).astype(int)  # biased toward majority class
+
+# Optimal threshold scan
+thresholds = np.arange(0.05, 0.95, 0.01)
+maes = [mean_absolute_error(y_true, (probas >= t).astype(int)) for t in thresholds]
+optimal_t = thresholds[np.argmin(maes)]
+# Result: threshold = 0.88 (model requires high confidence before predicting "banked")
+```
+
+The 0.88 threshold is not aggressive — it's the mathematically correct response to 6:1 class imbalance. It minimizes false positives (predicting someone is banked when they're not).
+
+### Stacking Architecture
+
+```
+Layer 1 (Base Models — 5-fold each):
+  XGBoost    → OOF probabilities (23,524 values)
+  LightGBM   → OOF probabilities (23,524 values)
+  CatBoost   → OOF probabilities (23,524 values)
+
+Layer 2 (Meta-Learner):
+  Input: [xgb_oof, lgbm_oof, cat_oof] stacked → (23,524, 3) matrix
+  Model: Logistic Regression (regularized, class_weight='balanced')
+  Learns: optimal trust weights per base model per region of feature space
+  Output: final probabilities → threshold → 0/1 predictions
+```
+
+---
+
+## 🔍 Explainability Layer
+
+SHAP TreeExplainer computes exact Shapley values for tree-based models — mathematically grounded in cooperative game theory. Each feature's SHAP value represents its marginal contribution to the prediction, averaged across all possible feature orderings.
+
+**Top SHAP findings:**
+
+| Rank | Feature | Mean |SHAP| | Direction | Insight |
+|---|---|---|---|---|
+| 1 | `cellphone_access` | 0.426 | Both | #1 barrier when absent, #1 enabler when present |
+| 2 | `country_Tanzania` | 0.378 | ↓ barrier | Country infrastructure effect beyond individual factors |
+| 3 | `inclusion_score` | 0.312 | Both | Composite captures systemic multi-barrier exclusion |
+| 4 | `age_x_education` | 0.306 | Both | Young+uneducated = highest risk interaction |
+| 5 | `job_type_te` | 0.244 | Both | Group-level employment inclusion rate |
+
+---
+
+## 🌍 Innovation: Policy Simulator
+
+```python
+# For every predicted-unbanked person:
+shap_series = pd.Series(shap_values[person_idx], index=feature_names)
+top_barriers = shap_series.nsmallest(3)  # Most negative SHAP = biggest barriers
+
+for barrier in top_barriers:
+    recommendation = RECOMMENDATION_RULES[barrier]
+    # e.g. cellphone_access → "📱 Mobile money bridge" → SDG 9
+```
+
+**Country Scorecard output:**
+
+| Country | Inclusion Rate | Top Barrier | Intervention | SDG |
+|---|---|---|---|---|
+| Uganda | 32.1% | Infrastructure | Agent banking | 9 |
+| Tanzania | 33.4% | Mobile access | Mobile money | 9 |
+| Rwanda | 50.8% | Multi-barrier | Bundled programs | 1, 8 |
+| Kenya | 73.2% | Education gap | Youth literacy | 4 |
+
+---
+
+## ⚙️ Setup & Reproduction
+
+### Requirements
 
 ```bash
-git clone https://github.com/Byabato/financial-inclusion-africa-ml-zindi.git
-cd financial_inclusion_africa
 pip install -r requirements.txt
-
-# Add Train.csv + Test.csv to data/raw/
-
-python notebooks/01_EDA.py
-python notebooks/02_feature_engineering.py
-python notebooks/03_modeling.py
-python notebooks/04_hyperparameter_tuning.py
-python notebooks/05_explainability_innovation.py
-
-# Submit: outputs/submission_tuned.csv → Zindi
+# Key packages: xgboost, lightgbm, catboost, optuna, shap,
+#               scikit-learn, imbalanced-learn, pandas, numpy
 ```
+
+### Data
+
+Download from [Zindi competition page](https://zindi.africa/competitions/financial-inclusion-in-africa/data) and place:
+```
+data/raw/Train.csv
+data/raw/Test.csv
+data/raw/SampleSubmission.csv
+```
+
+### Run Order
+
+```bash
+python notebooks/01_EDA.py                         # ~2 min  — 10 EDA charts
+python notebooks/02_feature_engineering.py         # ~1 min  — feature pipeline
+python notebooks/03_modeling.py                    # ~10 min — 4 models + ensemble
+python notebooks/04_hyperparameter_tuning.py       # ~30 min — Optuna search
+python notebooks/05_explainability_innovation.py   # ~5 min  — SHAP + policy
+python notebooks/06_beat_leaderboard.py            # ~45 min — pseudo-label + calibration
+```
+
+**Submit:** `outputs/submission_tuned.csv` → [Zindi upload page](https://zindi.africa/competitions/financial-inclusion-in-africa/submissions)
+
+### Google Colab
+
+```python
+!git clone https://github.com/byabato/financial-inclusion-africa-ml-zindi.git
+%cd financial-inclusion-africa-ml-zindi
+!pip install -r requirements.txt -q
+# Upload data files via Colab file browser → data/raw/
+%run notebooks/01_EDA.py
+```
+
+---
+
+## 📁 File Reference
+
+| File | Generated By | Description |
+|---|---|---|
+| `outputs/submission_tuned.csv` | notebook 04 | 🏆 Final Zindi submission |
+| `outputs/shap_bar_importance.png` | notebook 05 | Top features by mean SHAP |
+| `outputs/shap_summary_beeswarm.png` | notebook 05 | Individual-level SHAP impact |
+| `outputs/12_model_comparison.png` | notebook 03 | All model OOF MAEs |
+| `outputs/intervention_simulator.png` | notebook 05 | Country uplift if mobile = universal |
+| `outputs/country_policy_scorecard.csv` | notebook 05 | Country-level analysis |
+| `outputs/recommendations_all_unbanked.csv` | notebook 05 | Per-person intervention plans |
+| `models/best_params.json` | notebook 04 | Optuna best hyperparameters |
 
 ---
 
 ## 📚 References
 
-- [FinAccess Kenya 2018](https://www.fsdkenya.org/publication/finaccess2019/) · [FinScope Rwanda 2016](https://www.minecofin.gov.rw/) · [FinScope Tanzania 2017](https://www.fsdt.or.tz/) · [FinScope Uganda 2018](https://www.bou.or.ug/)
+- [FinAccess Kenya 2018](https://www.fsdkenya.org/publication/finaccess2019/)
+- [FinScope Rwanda 2016](https://www.minecofin.gov.rw/)
+- [FinScope Tanzania 2017](https://www.fsdt.or.tz/)
+- [FinScope Uganda 2018](https://www.bou.or.ug/)
 - Lundberg & Lee (2017) — [SHAP: A Unified Approach to Explaining Model Predictions](https://arxiv.org/abs/1705.07874)
 - World Bank Global Findex Database 2021
 
 ---
 
-## ⚡ Lightning AI Studios
-This project was developed and hosted entirely on Lightning AI Studios—a collaborative, persistent cloud workspace with on-demand GPU access (A100s, H100s). No Google Colab required. Lightning AI Studios provides a VS Code-like IDE experience in the cloud, ideal for reproducible, scalable machine learning workflows.
-
-To run or reproduce:
-- Clone the repo to your Lightning AI Studios workspace
-- Install dependencies from requirements.txt
-- Launch notebooks or scripts as needed
-
-## 🔍 Deep-Dive: The State of Exclusion
-<p align="center">
-  <img src="outputs/02_inclusion_by_country.png" alt="Inclusion by Country" width="350"/>
-  <img src="outputs/05_mobile_vs_banking.png" alt="Mobile vs Banking" width="350"/>
-  <img src="outputs/06_gender_gap.png" alt="Gender Gap" width="350"/>
-</p>
+*Built on Lightning AI Studios · [Live project page →](https://byabato.github.io/financial-inclusion-africa-ml-zindi/)*  
+*For the African Data Science Community — because 86% of East Africans deserve better.*
