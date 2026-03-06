@@ -66,8 +66,9 @@ Person uniqueid_6065 x Kenya — Predicted: UNBANKED
 ## 📊 SHAP Feature Importance
 
 <p align="center">
-  <img src="outputs/shap_summary_beeswarm.png" alt="SHAP Beeswarm" width="700"/>
+  <img src="outputs/shap_bar_importance.png" alt="SHAP Feature Importance" width="780"/>
 </p>
+<p align="center"><i>Notice how Cellphone Access has a higher SHAP value than Education; this suggests that infrastructure is a greater barrier to entry than literacy in these regions.</i></p>
 
 Top drivers of financial exclusion (from SHAP analysis):
 
@@ -90,6 +91,8 @@ Top drivers of financial exclusion (from SHAP analysis):
 | 🇰🇪 Kenya | 73.2% | Age-education gap | Youth financial literacy |
 
 > Kenya leads because of M-Pesa. Its mobile infrastructure model should be replicated across the region.
+>
+> This scorecard demonstrates how ML can be translated into actionable government policy, moving from abstract predictions to localized infrastructure priorities.
 
 ---
 
