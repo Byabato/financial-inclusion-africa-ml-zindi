@@ -9,7 +9,7 @@ layout: null
   <meta name="description" content="End-to-end ML pipeline with SHAP Explainability and Policy Intervention Simulator for East Africa. Stacking Ensembles, Optuna, CatBoost, XGBoost, LightGBM."/>
   <meta property="og:title" content="Financial Inclusion in Africa — Kelvin Byabato"/>
   <meta property="og:image" content="outputs/shap_bar_importance.png"/>
-  <link rel="icon" href="https://raw.githubusercontent.com/Byabato/financial-inclusion-africa-ml/main/outputs/02_inclusion_by_country.png" type="image/png">
+  <link rel="icon" href="outputs/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
