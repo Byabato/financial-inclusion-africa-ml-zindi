@@ -1,0 +1,37 @@
+# ============================================================
+# Financial Inclusion Africa — Project Dependencies
+# ============================================================
+# Install with: pip install -r requirements.txt
+
+# Core data science
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.0
+
+# Visualization
+matplotlib==3.8.4
+seaborn==0.13.2
+plotly==5.22.0
+
+# Machine Learning
+scikit-learn==1.4.2
+xgboost==2.0.3
+lightgbm==4.3.0
+catboost==1.2.5
+
+# Imbalanced learning
+imbalanced-learn==0.12.2
+
+# Hyperparameter tuning
+optuna==3.6.1
+
+# Explainability
+shap==0.45.1
+
+# Utilities
+joblib==1.4.2
+tqdm==4.66.4
+
+# Jupyter (for Colab / local)
+ipykernel==6.29.4
+ipywidgets==8.1.3

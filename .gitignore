@@ -1,0 +1,38 @@
+# Data
+/data/raw/Train.csv
+/data/raw/Test.csv
+/data/raw/SampleSubmission.csv
+/data/processed/*.csv
+
+# Model outputs
+/models/*.pkl
+/models/*.npy
+/catboost_info/
+
+# Outputs
+/outputs/submission*.csv
+/outputs/recommendations_all_unbanked.csv
+
+# Training logs and event files
+catboost_info/learn/events.out.tfevents
+catboost_info/test/events.out.tfevents
+*.tfevents
+
+# Python cache
+src/__pycache__/
+notebooks/__pycache__/
+__pycache__/
+
+# Credentials, API keys, local env
+.env
+*.env
+*.secret
+*.key
+*.token
+*.config
+setup_git.sh
+
+# Misc
+.DS_Store
+Thumbs.db
+
