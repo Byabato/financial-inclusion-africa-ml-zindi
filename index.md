@@ -180,10 +180,6 @@ layout: null
 </head>
 <body>
 
-<div class="toggle-theme" title="Toggle light/dark mode">
-  <svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V4a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1zm9-7a1 1 0 0 1 1 1h1a1 1 0 0 1 0-2h-1a1 1 0 0 1-1 1zm-16 0a1 1 0 0 1 1 1H4a1 1 0 0 1 0-2h1a1 1 0 0 1 1 1zm13.07-6.07a1 1 0 0 1 1.41 0l.71.71a1 1 0 0 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41zm-10.14 0a1 1 0 0 1 0 1.41l-.71.71a1 1 0 0 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0zm10.14 12.14a1 1 0 0 1 0 1.41l-.71.71a1 1 0 0 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0zm-10.14 0a1 1 0 0 1-1.41 0l-.71.71a1 1 0 0 1 1.41 1.41l.71-.71a1 1 0 0 1 0-1.41zM12 6a6 6 0 1 1 0 12A6 6 0 0 1 12 6z"/></svg>
-</div>
-
 <nav>
   <a href="#" class="nav-brand">Kelvin Byabato</a>
   <ul class="nav-links">
