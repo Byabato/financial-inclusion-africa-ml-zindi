@@ -96,7 +96,7 @@ Top drivers of financial exclusion (from SHAP analysis):
 ## 🏗️ Architecture
 
 ```
-financial_inclusion_africa/
+financial_inclusion_africa_ml_zindi/
 ├── src/
 │   ├── config.py          — All constants, paths, encoding maps
 │   ├── features.py        — 20+ engineered features (pure functions)
@@ -140,7 +140,7 @@ financial_inclusion_africa/
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/financial_inclusion_africa.git
+git clone https://github.com/Byabato/financial-inclusion-africa-ml-zindi.git
 cd financial_inclusion_africa
 pip install -r requirements.txt
 
